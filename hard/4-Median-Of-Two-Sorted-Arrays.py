@@ -20,41 +20,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class ListNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+from typing import List
 
 
 class Solution(object):
 
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        result = [int(i) for i in (str(int(self.re_build(l1)) + int(self.re_build(l2))))]
-        result.reverse()
-        root = ListNode(result[0])
-        rnext = root
-        for i in result[1:]:
-            rnext.next = ListNode(i)
-            rnext = rnext.next
-        return root
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        m, n = len(nums1), len(nums2)
+        total_len = m + n
 
-    def re_build(self, a):
-        if a.next is None:
-            return str(a.val)
+        def get_k_element(k, m, n):
+            index_a, index_b = 0, 0
+            while True:
+                if index_a == m:
+                    return nums2[index_b + k - 1]
+                if index_b == n:
+                    return nums1[index_a + k - 1]
+                if k == 1:
+                    return min(nums1[index_a], nums2[index_b])
+
+                aci = min(index_a + (k // 2 - 1), m - 1)
+                bci = min(index_b + (k // 2 - 1), n - 1)
+                pivot_a, pivot_b = nums1[aci], nums2[bci]
+                if pivot_a <= pivot_b:
+                    k -= aci - index_a + 1
+                    index_a = aci + 1
+                else:
+                    k -= bci - index_b + 1
+                    index_b = bci + 1
+
+        if total_len % 2 == 1:
+            return get_k_element((total_len+1) // 2, m, n)
         else:
-            return self.re_build(a.next) + str(a.val)
-
-
-if __name__ == '__main__':
-    l1 = ListNode(2)
-    l1.next = ListNode(4)
-    l1.next.next = ListNode(3)
-    l2 = ListNode(5)
-    l2.next = ListNode(6)
-    l2.next.next = ListNode(4)
-    solu = Solution()
-    results = solu.addTwoNumbers(l1, l2)
-    results = solu.re_build(results)
-    print(results)
+            return get_k_element(total_len // 2, m, n) + get_k_element(total_len // 2 + 1, m, n) / 2
