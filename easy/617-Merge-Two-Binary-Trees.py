@@ -20,36 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from utils import ListNode
+from utils import TreeNode
 
 
 class Solution(object):
 
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        result = [int(i) for i in (str(int(self.re_build(l1)) + int(self.re_build(l2))))]
-        result.reverse()
-        root = ListNode(result[0])
-        rnext = root
-        for i in result[1:]:
-            rnext.next = ListNode(i)
-            rnext = rnext.next
-        return root
-
-    def re_build(self, a):
-        if a.next is None:
-            return str(a.val)
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+        if not (t1 and t2):
+            return t1 if t1 else t2
         else:
-            return self.re_build(a.next) + str(a.val)
-
-
-if __name__ == '__main__':
-    l1 = ListNode(2)
-    l1.next = ListNode(4)
-    l1.next.next = ListNode(3)
-    l2 = ListNode(5)
-    l2.next = ListNode(6)
-    l2.next.next = ListNode(4)
-    solu = Solution()
-    results = solu.addTwoNumbers(l1, l2)
-    results = solu.re_build(results)
-    print(results)
+            t1.val += t2.val
+            t1.left = self.mergeTrees(t1.left, t2.left)
+            t1.right = self.mergeTrees(t1.right, t2.right)
+            return t1

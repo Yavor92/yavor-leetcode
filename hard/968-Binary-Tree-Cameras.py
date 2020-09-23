@@ -20,13 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from utils import TreeNode
 
 
 class Solution(object):
