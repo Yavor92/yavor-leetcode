@@ -20,8 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from utils import TreeNode
+from typing import List
+
 
 class Solution(object):
 
-    def myAtoi(self, str: str) -> int:
-        str = 
+    def findMode(self, root: TreeNode) -> List[int]:
+        hash = {}
+        ans = []
+        def dfs(root):
+            if not root:
+                return
+            if root.val in hash:
+                hash[root.val] += 1
+            else:
+                hash[root.val] = 1
+            if root.left:
+                dfs(root.left)
+            if root.right:
+                dfs(root.right)
+
+        if not root:
+            return []
+        dfs(root)
+        Max = max(list(hash.values()))
+        for i in list(hash.keys()):
+            if hash[i] == Max:
+                ans.append(i)
+        return ans
