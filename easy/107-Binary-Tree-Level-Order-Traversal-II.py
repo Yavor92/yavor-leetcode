@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from utils import TreeNode
-import collections
+
 
 class Solution(object):
 
@@ -29,12 +29,12 @@ class Solution(object):
         levelOrder = list()
         if not root:
             return levelOrder
-        q = collections.deque([root])
+        q = list([root])
         while q:
             level = list()
             size = len(q)
             for _ in range(size):
-                node = q.popleft()
+                node, q = q[0], q[1:]
                 level.append(node.val)
                 if node.left:
                     q.append(node.left)
