@@ -20,26 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from utils import Node
 
 
-class ListNode(object):
+class Solution(object):
 
-    def __init__(self, x):
-        self.val = x
-        self.next = None
-
-
-class Node:
-
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
+    def connect(self, root: 'Node') -> 'Node':
+        stack = list()
+        stack.append(root)
+        while stack:
+            l = len(stack)
+            prev = None
+            for i in range(l):
+                node = stack.pop(0)
+                if node is not None:
+                    if prev is not None:
+                        prev.next = node
+                    prev = node
+                    if node.left:
+                        stack.append(node.left)
+                    if node.right:
+                        stack.append(node.right)
+        return root
