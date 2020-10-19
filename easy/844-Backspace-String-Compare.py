@@ -23,33 +23,14 @@
 
 class Solution(object):
 
-    def totalNQueens(self, n: int) -> int:
-
-        columns = set()
-        diagonal1 = set()
-        diagonal2 = set()
-
-        def backtrack(row: int) -> int:
-            if row == n:
-                return 1
-            else:
-                count = 0
-                for i in range(n):
-                    if i in columns or row - i in diagonal1 or row + i in diagonal2:
-                        continue
-                    columns.add(i)
-                    diagonal1.add(row - i)
-                    diagonal2.add(row + i)
-                    count += backtrack(row + 1)
-                    columns.remove(i)
-                    diagonal1.remove(row - i)
-                    diagonal2.remove(row + i)
-                return count
-
-        return backtrack(0)
-
-
-if __name__ == '__main__':
-    a = Solution()
-    b = a.totalNQueens(4)
-    print(b)
+    def backspaceCompare(self, S: str, T: str) -> bool:
+        def back(a):
+            s = ""
+            for i in a:
+                if i == "#":
+                    if s:
+                        s = s[:-1]
+                else:
+                    s += i
+            return s
+        return back(S) == back(T)
