@@ -20,26 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from utils import ListNode
 
 
-class ListNode(object):
+class Solution(object):
 
-    def __init__(self, x, next=None):
-        self.val = x
-        self.next = next
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(0, head)
+        first = head
+        second = dummy
+        for i in range(n):
+            first = first.next
 
+        while first:
+            first = first.next
+            second = second.next
 
-class Node:
-
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
+        second.next = second.next.next
+        return dummy.next

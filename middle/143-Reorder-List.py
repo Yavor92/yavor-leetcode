@@ -20,26 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from utils import ListNode
 
 
-class ListNode(object):
+class Solution(object):
 
-    def __init__(self, x, next=None):
-        self.val = x
-        self.next = next
+    def reorderList(self, head: ListNode) -> None:
+        if not head:
+            return
 
+        vec = list()
+        node = head
+        while node:
+            vec.append(node)
+            node = node.next
 
-class Node:
+        i, j = 0, len(vec) - 1
+        while i < j:
+            vec[i].next = vec[j]
+            i += 1
+            if i == j:
+                break
+            vec[j].next = vec[i]
+            j -= 1
 
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
+        vec[i].next = None
+        pass
