@@ -20,17 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from utils import TreeNode
+
 
 class Solution(object):
 
-    def isLongPressedName(self, name: str, typed: str) -> bool:
-        pointer_0, pointer_1 = 0, 0
-        while pointer_1 < len(typed):
-            if pointer_0 < len(name) and name[pointer_0] == typed[pointer_1]:
-                pointer_0 += 1
-                pointer_1 += 1
-            elif pointer_1 > 0 and typed[pointer_1] == typed[pointer_1 - 1]:
-                pointer_1 += 1
-            else:
-                return False
-        return pointer_0 == len(name)
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        self.preNum = float("-inf")
+        self.ans = float("inf")
+        def dfs(root: TreeNode) -> None:
+            if root is None:
+                return
+            dfs(root.left)
+            if abs(root.val - self.preNum) < self.ans:
+                self.ans = abs(root.val - self.preNum)
+            self.preNum = root.val
+            dfs(root.right)
+            return
+        dfs(root)
+        return self.ans
