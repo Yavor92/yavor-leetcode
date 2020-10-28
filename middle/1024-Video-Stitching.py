@@ -25,24 +25,20 @@ from typing import List
 
 class Solution(object):
 
-    def partitionLabels(self, S: str) -> List[int]:
-        storage_container = {word: num for num, word in enumerate(S)}
-        start, end = 0, 0
-        result = list()
-        for i in range(len(S)):
-            if i <= end:
-                if storage_container[S[i]] > end:
-                    end = storage_container[S[i]]
-            elif i > end:
-                result.append(i - start)
-                start = i
-                end = storage_container[S[i]]
-        result.append(len(S)-start)
-        return result
-
-
-if __name__ == '__main__':
-    solu = Solution()
-    words = "ababcbacadefegdehijhklij"
-    resu = solu.partitionLabels(words)
-    print(resu)
+    def videoStitching(self, clips: List[List[int]], T: int) -> int:
+        n = len(clips)
+        clips = sorted(clips, key=lambda  x: x[0])
+        res = last_end = j = 0
+        for i in range(n):
+            if last_end >= T:
+                break
+            maxLength = last_end
+            while (j < n and clips[j][0] <= last_end):
+                maxLength = max(maxLength, clips[j][1])
+                j += 1
+            if j == i:
+                return -1
+            last_end = maxLength
+            i = j - 1
+            res += 1
+        return -1 if last_end < T else res

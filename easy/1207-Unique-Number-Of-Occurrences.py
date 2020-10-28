@@ -25,24 +25,13 @@ from typing import List
 
 class Solution(object):
 
-    def partitionLabels(self, S: str) -> List[int]:
-        storage_container = {word: num for num, word in enumerate(S)}
-        start, end = 0, 0
-        result = list()
-        for i in range(len(S)):
-            if i <= end:
-                if storage_container[S[i]] > end:
-                    end = storage_container[S[i]]
-            elif i > end:
-                result.append(i - start)
-                start = i
-                end = storage_container[S[i]]
-        result.append(len(S)-start)
-        return result
-
-
-if __name__ == '__main__':
-    solu = Solution()
-    words = "ababcbacadefegdehijhklij"
-    resu = solu.partitionLabels(words)
-    print(resu)
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        dict_list = dict()
+        for i in arr:
+            if i in dict_list.keys():
+                dict_list[i] += 1
+            else:
+                dict_list[i] = 0
+        result = dict_list.values()
+        set_res = set(result)
+        return len(set_res) == len(result)
