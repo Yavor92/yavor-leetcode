@@ -20,60 +20,44 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from typing import List
+from utils import BIT
 
 
-class ListNode(object):
+class Solution(object):
 
-    def __init__(self, x, next=None):
-        self.val = x
-        self.next = next
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        sum = 0
+        length = len(nums)
+        preSum = [0] * (length + 1)
+        for i in range(length):
+            sum += nums[i]
+            preSum[i + 1] = sum
 
+        allNumbers = set()
+        for pre in preSum:
+            allNumbers.add(pre)
+            allNumbers.add(pre - lower)
+            allNumbers.add(pre - upper)
 
-class Node:
+        allNumbers = list(allNumbers)
+        allNumbers.sort()
 
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
+        values = {v: k for k, v in enumerate(allNumbers)}
 
-
-# 树状数组
-class BIT(object):
-
-    def __init__(self, n):
-        self.tree = [0] * (n+1)
-        self.n = n
-
-    def lowbit(self, x: int):
-        return x & (-x)
-
-    def update(self, x: int, d: int):
-        while x <= self.n:
-            self.tree[x] += d
-            x += self.lowbit(x)
-
-    def query(self, x: int):
-        ans = 0
-        while x:
-            ans += self.tree[x]
-            x -= self.lowbit(x)
-        return ans
+        ret = 0
+        bit = BIT(len(values))
+        for j in range(len(preSum)):
+            left = values[preSum[j] - upper]
+            right = values[preSum[j] - lower]
+            ret += bit.query(right+1) - bit.query(left)
+            bit.update(values[preSum[j]] + 1, 1)
+        return ret
 
 
-# 线段树
-class SegNode(object):
-
-    def __init__(self, left: int, right: int):
-        self.lo = left
-        self.hi = right
-        self.add = 0
-        self.lchild = None
-        self.rchild = None
+if __name__ == '__main__':
+    data = [-2, 5, -1]
+    lower = -2
+    upper = 2
+    solu = Solution()
+    print(solu.countRangeSum(data, lower, upper))

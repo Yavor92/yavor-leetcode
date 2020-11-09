@@ -20,60 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-class TreeNode(object):
-
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from typing import List
 
 
-class ListNode(object):
+class Solution(object):
 
-    def __init__(self, x, next=None):
-        self.val = x
-        self.next = next
-
-
-class Node:
-
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
+    def maxProfit(self, prices: List[int]) -> int:
+        result = 0
+        for i in range(1, len(prices)):
+            result += max(0, prices[i] - prices[i - 1])
+        return result
 
 
-# 树状数组
-class BIT(object):
+if __name__ == '__main__':
+    solu = Solution()
+    price = [7, 1, 5, 3, 6, 4]
+    print(solu.maxProfit(price))
 
-    def __init__(self, n):
-        self.tree = [0] * (n+1)
-        self.n = n
-
-    def lowbit(self, x: int):
-        return x & (-x)
-
-    def update(self, x: int, d: int):
-        while x <= self.n:
-            self.tree[x] += d
-            x += self.lowbit(x)
-
-    def query(self, x: int):
-        ans = 0
-        while x:
-            ans += self.tree[x]
-            x -= self.lowbit(x)
-        return ans
-
-
-# 线段树
-class SegNode(object):
-
-    def __init__(self, left: int, right: int):
-        self.lo = left
-        self.hi = right
-        self.add = 0
-        self.lchild = None
-        self.rchild = None
